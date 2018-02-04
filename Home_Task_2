@@ -1,23 +1,19 @@
 segment .data
-	fmt: db "Multiplication: %d * %d = %d",10,0
-	fmt2: db "Division: %d / %d = %d",10, "Remainder: %d",10,0
+	
 	fmt3: db "%d",0
 	fmt4: db "%d",10,0
-	value1 dd 11
-	value2 dd -2
 
 segment .bss
 
-	val1 resb 16
-	val2 resb 16
-	val3 resb 16
-	val4 resb 16
+	val1 resq 16
+	val2 resq 16
+	val3 resq 16
+	val4 resq 16
 
 segment .text
 
 	global main
-	extern printf
-	extern scanf
+	extern printf, scanf
 
 main:
 
@@ -46,17 +42,16 @@ main:
 
 
 	mov rdi, fmt4		
-	;mov rsi, [val1]		;1st output
-	mov rax, [val2]
-	mov rcx, [val3]
+	mov rax, qword [val2]
+	mov rcx, qword [val3]
 
 	imul rcx
 
-	idiv dword [val4]
+	idiv qword [val4]
 
-	add rax, [val1]
-	;mov rcx, rax 		;3rd output
-	mov rsi, rax		;2nd output
+	add rax, qword [val1]
+	mov rsi, rax
+	mov rax, 1	
 	call printf
 	
 
