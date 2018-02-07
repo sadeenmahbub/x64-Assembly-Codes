@@ -1,82 +1,63 @@
 32-bit
 
-				.MODEL SMALL
-				.STACK 100h
-				.DATA
-				CR EQU 0DH
-				LF EQU 0AH
-				MSG1 DB “ENTER A UPPER CASE LETTER: $”
-				MSG2 DB CR, LF, “IN LOWER CASE IT IS: “
-				CHAR DB ? , ‘$’
-				.CODE
-				MAIN PROC
-				MOV AX, @DATA
-				MOV DS, AX
-				LEA DX, MSG1
-				MOV AH, 9
-				INT 21H
-				MOV AH, 1
-				INT 21H
-				ADD AL, 20H
-				MOV CHAR, AL
-				LEA DX, MSG2
-				MOV AH, 9
-				INT 21H
-				MOV AH, 4CH
-				INT 21H
-				MAIN ENDP
-				END MAIN
+.MODEL SMALL
+.STACK 100h
+.DATA
+CR EQU 0DH
+LF EQU 0AH
+MSG1 DB “ENTER A UPPER CASE LETTER: $”
+MSG2 DB CR, LF, “IN LOWER CASE IT IS: “
+CHAR DB ? , ‘$’
+.CODE
+MAIN PROC
+MOV AX, @DATA
+MOV DS, AX
+LEA DX, MSG1
+MOV AH, 9
+INT 21H
+MOV AH, 1
+INT 21H
+ADD AL, 20H
+MOV CHAR, AL
+LEA DX, MSG2
+MOV AH, 9
+INT 21H
+MOV AH, 4CH
+INT 21H
+MAIN ENDP
+END MAIN
 
 64-bit
 
-			  segment .data
-			  fmt: db "%s",10,0
-			  fmt2: db "Enter upper case character: ", 0
-			  fmt4: db "Lower case character is: %s", 10, 0
-			  fmt3: db "%s",0
-
-			  value1 dd 11
-			  value2 dd -2
-
-			  segment .bss
-
-			  val1 resb 16
-			  val2 resb 16
-
-			  segment .text
-
-			  global main
-			  extern printf
-			  extern scanf
-
-			  main:
-
-				push rbp
-
-
-				mov rdi, fmt2
-				mov al, 0
-				call printf
-
-				mov rdi, fmt3
-				mov rsi, val1
-				mov al, 0
-				call scanf
-
-				mov rax, [val1]
-				add rax, 20H
-				mov [val1], rax
+segment .data
+fmt2: db "Enter upper case character: ", 0
+fmt4: db "Lower case character is: %s", 10, 0
+fmt3: db "%s",0
+segment .bss
+val1 resb 16
+segment .text
+global main
+extern printf, scanf
+main:	push rbp
+mov rdi, fmt2
+mov al, 0
+call printf
+mov rdi, fmt3
+mov rsi, val1
+mov al, 0
+call scanf
+mov rax, [val1]
+add rax, 20H
+mov [val1], rax
+mov rdi, fmt4
+mov rsi, val1
+mov al, 0
+call printf
+mov rax, 0
+pop rbp
+ret
 
 
-
-				mov rdi, fmt4
-				mov rsi, val1
-				mov al, 0
-				call printf
-
-				mov rax, 0
-				pop rbp
-				ret
 
 
 
